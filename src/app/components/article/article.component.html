@@ -1,0 +1,7 @@
+<gt-title [mode]="mode" [(model)]="model.title"></gt-title>
+<ng-container *ngIf="model.sections">
+    <gt-section [mode]="mode" *ngFor="let section of model.sections; let index = index"
+                [model]="section" (modelChange)="sectionChange($event, index)"></gt-section>
+</ng-container>
+
+<button *ngIf="mode==='EDIT'" (click)="newSection()">New Section</button>

@@ -1,0 +1,14 @@
+<div class="dialog-container">
+    <div class="card-container" style="justify-content: flex-end; ">
+        <div class="card card-small close" routerLink="../">
+            &times;
+        </div>
+    </div>
+
+    <div class="dialog-content">
+        <ng-content select="[slot=body]>*"></ng-content>
+    </div>
+    <div class="card-container">
+        <ng-content select="[slot=footer]>*"></ng-content>
+    </div>
+</div>

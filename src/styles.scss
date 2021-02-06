@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@keyframes emptyFocusAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+[gt-placeholder]:empty::before {
+  content: attr(gt-placeholder);
+  color: #555;
+}
+
+[gt-placeholder]:empty:focus::before {
+  animation: emptyFocusAnimation 1s linear infinite alternate;
+  content: "|";
+}

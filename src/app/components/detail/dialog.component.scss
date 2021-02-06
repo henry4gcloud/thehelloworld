@@ -1,0 +1,132 @@
+:host {
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  .dialog-container {
+    width: 100%;
+    margin-top: -50% ;
+    margin-left: -50% ;
+
+    background-color: #fafafa;
+    box-shadow: 0 4px 17px rgb(0 0 0 / 35%);
+    background-color: #fafafa;
+    border-radius: 8px;
+
+    .back-screen {
+      position: fixed;
+      top: -100vh;
+      bottom: -100vh;
+      left: -100vw;
+      right: -100vw;
+      background: #000;
+      opacity: .5;
+      z-index: -1;
+    }
+
+    .card-container {
+      background: #eeeeee;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      .card {
+        margin: 8px;
+      }
+
+      .close {
+        float: right;
+        width: 24px;
+        height: 24px;
+        margin: 8px;
+        padding: 4px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: bolder;
+      }
+
+
+    }
+
+
+    .detail-content {
+      display: flex;
+      flex-direction: row;
+      background-color: #fafafa;
+      display: flex;
+      flex-direction: row;
+      z-index: 100;
+      background: #fafafa;
+      padding: 8px;
+
+      au-card {
+        ::ng-deep {
+          .card:hover {
+            transform: unset;
+            box-shadow: unset;
+            cursor: unset;
+          }
+        }
+      }
+
+    }
+
+
+
+    .card {
+      border-radius: 4px;
+      border: 1px solid #eee;
+      background-color: #fafafa;
+      height: 40px;
+      width: 200px;
+      margin: 0 8px 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease-in-out;
+      line-height: 24px;
+
+      &:not(:last-child) {
+        margin-right: 0;
+      }
+
+      &.card-small {
+        height: 16px;
+        width: 168px;
+      }
+
+      &.highlight-card {
+        background-color: #1976d2;
+        color: white;
+        font-weight: 600;
+        border: none;
+        width: auto;
+        min-width: 30%;
+        position: relative;
+
+        span {
+          margin-left: 60px;
+        }
+      }
+
+      &:not(.highlight-card) {
+        cursor: pointer;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+
+          .material-icons path {
+            fill: rgb(105, 103, 103);
+          }
+        }
+      }
+
+      svg.material-icons path {
+        fill: #888;
+      }
+    }
+  }
+
+}

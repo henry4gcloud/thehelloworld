@@ -1,0 +1,29 @@
+
+<!-- Highlight Card -->
+<gt-search-bar [(value)]="searchingValue" (complete)="changeSearchingValue()"></gt-search-bar>
+<br/>
+
+<!-- Resources -->
+<!--    <h2>Resources</h2>-->
+<!--    <p>Here are some links to help you get started:</p>-->
+
+<div class="card-container">
+    <ng-container *ngFor="let product of blogs">
+        <gt-card [data]="product" routerLink="./{{product.id}}"></gt-card>
+    </ng-container>
+
+</div>
+
+<div class="card-container">
+    <button class="card card-small" (click)="back()" [disabled]="pageIndex===0">
+        <span> <= Back </span>
+    </button>
+
+
+    <button class="card card-small" (click)="next()" [disabled]="blogs.length<16">
+        <span> Next => </span>
+    </button>
+
+</div>
+
+<!--<router-outlet></router-outlet>-->

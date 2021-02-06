@@ -1,0 +1,4 @@
+<gt-heading gt-placeholder="Heading" [mode]="mode" *ngIf="model.heading || mode !== 'VIEW'"
+            [(model)]="model.heading"></gt-heading>
+<gt-paragraph gt-placeholder="Content"  [mode]="mode" *ngIf="model.content || mode !== 'VIEW'"
+              [(model)]="model.content"></gt-paragraph>
