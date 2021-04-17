@@ -1,7 +1,7 @@
 export class Model{
     id?: string|number;
     createdAt?: Date;
-    updatedAd?: Date;
+    latestUpdatedAt?: Date;
     deletedAt?: Date;
     constructor(obj?: object) {
         if (obj && Object.entries(obj).length){

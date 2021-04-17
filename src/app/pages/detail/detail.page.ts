@@ -1,13 +1,14 @@
-import {Component, OnInit, Type} from '@angular/core';
+import {Component, Injector, OnInit, Type} from '@angular/core';
 import {Blog} from '../../models/Blog';
 import {ApiService} from '../../services/api.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ContentModel} from '../../models/ContentModel';
-import {UtilityService} from "../../services/utility.service";
-import {ContentComponent} from '../../components/content/content.component';
+import {TextComponent} from '../../components/text/text.component';
 import {Templatable} from '../../containers/Templatable';
 import {SectionModel} from '../../models/SectionModel';
 import {ArticleModel} from '../../models/ArticleModel';
+import {UtilityService} from '../../services/utility.service';
+import {Dependency} from '../../decorators/dependency-injection';
 
 @Component({
   selector: 'gt-detail',
@@ -19,7 +20,7 @@ export class DetailPage implements OnInit {
 
   mode: 'DESIGN' | 'EDIT' | 'VIEW' = 'VIEW';
 
-  contentType: Type<Templatable> = ContentComponent;
+  contentType: Type<Templatable> = TextComponent;
 
   blog = new Blog({});
   content = new ContentModel({content: 'Hello World'});
@@ -44,13 +45,25 @@ export class DetailPage implements OnInit {
     ]
   });
 
-  constructor(private route: ActivatedRoute,
-              private utilityService: UtilityService,
+  @Dependency()
+  private date: Date;
+
+  constructor(private activatedRoute: ActivatedRoute, private router: Router,
+              private utilityService: UtilityService, private injector: Injector,
               private apiService: ApiService ) { }
 
   async ngOnInit(): Promise<void> {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.blog = await this.apiService.get(id);
+    // const id = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.blog = await this.apiService.get(id);
+    //
+    // let activatedRoute1 = this.injector.get(ActivatedRoute, undefined);
+    // const injector = Injector.create({providers: [{provide: DetailPage, deps: []}]});
+    // let activatedRoute2 = injector.get(ActivatedRoute, undefined);
+    // console.log(this.router);
+    // debugger;
+    // setTimeout(() => {
+    //   this.article = new ArticleModel(JSON.parse(JSON.stringify(this.article)));
+    //   }, 5000);
   }
 
 }

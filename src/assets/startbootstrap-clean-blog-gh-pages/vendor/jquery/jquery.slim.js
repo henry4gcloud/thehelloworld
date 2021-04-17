@@ -1322,7 +1322,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Select is set to empty string on purpose
 			// This is to test IE's treatment of not explicitly
-			// setting a boolean content attribute,
+			// setting a boolean text attribute,
 			// since its presence should be enough
 			// https://bugs.jquery.com/ticket/12359
 			docElem.appendChild( el ).innerHTML = "<a id='" + expando + "'></a>" +
@@ -2204,7 +2204,7 @@ Expr = Sizzle.selectors = {
 		"empty": function( elem ) {
 
 			// http://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+			// :empty is negated by element (1) or text nodes (text: 3; cdata: 4; entity ref: 5),
 			//   but not by others (comment: 8; processing instruction: 7; etc.)
 			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
@@ -5031,7 +5031,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 				wrap = wrapMap[ tag ] || wrapMap._default;
 				tmp.innerHTML = wrap[ 1 ] + jQuery.htmlPrefilter( elem ) + wrap[ 2 ];
 
-				// Descend through wrappers to the right content
+				// Descend through wrappers to the right text
 				j = wrap[ 0 ];
 				while ( j-- ) {
 					tmp = tmp.lastChild;
@@ -6077,7 +6077,7 @@ function domManip( collection, args, callback, ignored ) {
 			fragment = first;
 		}
 
-		// Require either new content or an interest in ignored elements to invoke the callback
+		// Require either new text or an interest in ignored elements to invoke the callback
 		if ( first || ignored ) {
 			scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
 			hasScripts = scripts.length;
@@ -6363,7 +6363,7 @@ jQuery.fn.extend( {
 	replaceWith: function() {
 		var ignored = [];
 
-		// Make the changes, replacing each non-ignored context element with the new content
+		// Make the changes, replacing each non-ignored context element with the new text
 		return domManip( this, arguments, function( elem ) {
 			var parent = this.parentNode;
 
@@ -6477,7 +6477,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 		pixelBoxStylesVal = roundPixelMeasures( divStyle.right ) === 36;
 
 		// Support: IE 9 - 11 only
-		// Detect misreporting of content dimensions for box-sizing:border-box elements
+		// Detect misreporting of text dimensions for box-sizing:border-box elements
 		boxSizingReliableVal = roundPixelMeasures( divStyle.width ) === 36;
 
 		// Support: IE 9 only
@@ -6510,9 +6510,9 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 
 	// Support: IE <=9 - 11 only
 	// Style of cloned element affects source element cloned (#8908)
-	div.style.backgroundClip = "content-box";
+	div.style.backgroundClip = "text-box";
 	div.cloneNode( true ).style.backgroundClip = "";
-	support.clearCloneStyle = div.style.backgroundClip === "content-box";
+	support.clearCloneStyle = div.style.backgroundClip === "text-box";
 
 	jQuery.extend( support, {
 		boxSizingReliable: function() {
@@ -6716,7 +6716,7 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 			delta += jQuery.css( elem, box + cssExpand[ i ], true, styles );
 		}
 
-		// If we get here with a content-box, we're seeking "padding" or "border" or "margin"
+		// If we get here with a text-box, we're seeking "padding" or "border" or "margin"
 		if ( !isBorderBox ) {
 
 			// Add padding
@@ -6731,26 +6731,26 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 				extra += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 
-		// If we get here with a border-box (content + padding + border), we're seeking "content" or
+		// If we get here with a border-box (text + padding + border), we're seeking "text" or
 		// "padding" or "margin"
 		} else {
 
-			// For "content", subtract padding
+			// For "text", subtract padding
 			if ( box === "content" ) {
 				delta -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 			}
 
-			// For "content" or "padding", subtract border
+			// For "text" or "padding", subtract border
 			if ( box !== "margin" ) {
 				delta -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		}
 	}
 
-	// Account for positive content-box scroll gutter when requested by providing computedVal
+	// Account for positive text-box scroll gutter when requested by providing computedVal
 	if ( !isBorderBox && computedVal >= 0 ) {
 
-		// offsetWidth/offsetHeight is a rounded sum of content, padding, scroll gutter, and border
+		// offsetWidth/offsetHeight is a rounded sum of text, padding, scroll gutter, and border
 		// Assuming integer scroll gutter, subtract the rest and round down
 		delta += Math.max( 0, Math.ceil(
 			elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
@@ -6759,7 +6759,7 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 			extra -
 			0.5
 
-		// If offsetWidth/offsetHeight is unknown, then we can't determine content-box scroll gutter
+		// If offsetWidth/offsetHeight is unknown, then we can't determine text-box scroll gutter
 		// Use an explicit zero to avoid NaN (gh-3964)
 		) ) || 0;
 	}
@@ -6773,7 +6773,7 @@ function getWidthOrHeight( elem, dimension, extra ) {
 	var styles = getStyles( elem ),
 
 		// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-4322).
-		// Fake content-box until we know it's needed to know the true value.
+		// Fake text-box until we know it's needed to know the true value.
 		boxSizingNeeded = !support.boxSizingReliable() || extra,
 		isBorderBox = boxSizingNeeded &&
 			jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
@@ -6818,7 +6818,7 @@ function getWidthOrHeight( elem, dimension, extra ) {
 
 		// Where available, offsetWidth/offsetHeight approximate border box dimensions.
 		// Where not available (e.g., SVG), assume unreliable box-sizing and interpret the
-		// retrieved value as a content box dimension.
+		// retrieved value as a text box dimension.
 		valueIsBorderBox = offsetProp in elem;
 		if ( valueIsBorderBox ) {
 			val = elem[ offsetProp ];
@@ -7053,7 +7053,7 @@ jQuery.each( [ "height", "width" ], function( _i, dimension ) {
 					0;
 
 			// Account for unreliable border-box dimensions by comparing offset* to computed and
-			// faking a content-box to get border and padding (gh-3699)
+			// faking a text-box to get border and padding (gh-3699)
 			if ( isBorderBox && scrollboxSizeBuggy ) {
 				subtract -= Math.ceil(
 					elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
@@ -8468,7 +8468,7 @@ jQuery.fn.extend( {
 			}
 			if ( offsetParent && offsetParent !== elem && offsetParent.nodeType === 1 ) {
 
-				// Incorporate borders into its offset, since they are outside its content origin
+				// Incorporate borders into its offset, since they are outside its text origin
 				parentOffset = jQuery( offsetParent ).offset();
 				parentOffset.top += jQuery.css( offsetParent, "borderTopWidth", true );
 				parentOffset.left += jQuery.css( offsetParent, "borderLeftWidth", true );

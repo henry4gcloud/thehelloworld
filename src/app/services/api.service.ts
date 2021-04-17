@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Blog} from "../models/Blog";
+import {DependencyDefine} from '../decorators/dependency-injection';
+import {Blog} from '../models/Blog';
 
 
 const sampleData: Array<Blog> = [
@@ -121,4 +122,5 @@ export class ApiService {
     await sleep(250);
     return sampleData[id];
   }
+
 }

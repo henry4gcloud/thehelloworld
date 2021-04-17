@@ -2504,13 +2504,13 @@
         // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
         //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
         var fixedContent = [].slice.call(document.querySelectorAll(SELECTOR_FIXED_CONTENT));
-        var stickyContent = [].slice.call(document.querySelectorAll(SELECTOR_STICKY_CONTENT)); // Adjust fixed content padding
+        var stickyContent = [].slice.call(document.querySelectorAll(SELECTOR_STICKY_CONTENT)); // Adjust fixed text padding
 
         $__default['default'](fixedContent).each(function (index, element) {
           var actualPadding = element.style.paddingRight;
           var calculatedPadding = $__default['default'](element).css('padding-right');
           $__default['default'](element).data('padding-right', actualPadding).css('padding-right', parseFloat(calculatedPadding) + _this10._scrollbarWidth + "px");
-        }); // Adjust sticky content margin
+        }); // Adjust sticky text margin
 
         $__default['default'](stickyContent).each(function (index, element) {
           var actualMargin = element.style.marginRight;
@@ -2527,13 +2527,13 @@
     };
 
     _proto._resetScrollbar = function _resetScrollbar() {
-      // Restore fixed content padding
+      // Restore fixed text padding
       var fixedContent = [].slice.call(document.querySelectorAll(SELECTOR_FIXED_CONTENT));
       $__default['default'](fixedContent).each(function (index, element) {
         var padding = $__default['default'](element).data('padding-right');
         $__default['default'](element).removeData('padding-right');
         element.style.paddingRight = padding ? padding : '';
-      }); // Restore sticky content
+      }); // Restore sticky text
 
       var elements = [].slice.call(document.querySelectorAll("" + SELECTOR_STICKY_CONTENT));
       $__default['default'](elements).each(function (index, element) {
@@ -3570,7 +3570,7 @@
     ;
 
     _proto._getContent = function _getContent() {
-      return this.element.getAttribute('data-content') || this.config.content;
+      return this.element.getAttribute('data-text') || this.config.content;
     };
 
     _proto._cleanTipClass = function _cleanTipClass() {

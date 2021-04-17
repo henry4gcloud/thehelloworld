@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,7 +10,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import {FormsModule} from '@angular/forms';
 import { CardComponent } from './components/card/card.component';
 import {ListPage} from './pages/list/list.page';
-import { ContentComponent } from './components/content/content.component';
+import { TextComponent } from './components/text/text.component';
 import { LayoutContainer } from './containers/layout/layout.container';
 import { ComponentContainer } from './containers/component/component.container';
 import {PageContainer} from './containers/page/page.container';
@@ -24,19 +24,23 @@ import { SectionComponent } from './components/section/section.component';
 import { SingleTextComponent } from './components/single-text/single-text.component';
 import { ArticleComponent } from './components/article/article.component';
 import { TitleComponent } from './components/title/title.component';
+import {InjectorService} from './services/InjectorService';
+import {TestPage} from './pages/test-page/test.page';
 
 const entryComponents = [
   PageContainer,
   LayoutContainer,
   ComponentContainer,
     //
-  ContentComponent,
+  TextComponent,
   InlineTextComponent,
   LabelComponent,
   ParagraphComponent,
   HeadingComponent,
   SectionComponent
 ];
+
+export let appInjector: Injector;
 
 @NgModule({
   declarations: [
@@ -48,7 +52,7 @@ const entryComponents = [
     HeaderLayout,
     SearchBarComponent,
     CardComponent,
-    ContentComponent,
+    TextComponent,
     LabelComponent,
     InlineTextComponent,
     PageContainer,
@@ -60,7 +64,8 @@ const entryComponents = [
     SectionComponent,
     SingleTextComponent,
     ArticleComponent,
-    TitleComponent
+    TitleComponent,
+    TestPage
   ],
 
   entryComponents: [
@@ -74,4 +79,9 @@ const entryComponents = [
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector, private injectorService: InjectorService) {
+    appInjector = this.injector;
+    // injectorService.test();
+  }
+}

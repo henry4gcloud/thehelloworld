@@ -8,9 +8,8 @@
 <!--    <p>Here are some links to help you get started:</p>-->
 
 <div class="card-container">
-    <ng-container *ngFor="let product of blogs">
-        <gt-card [data]="product" routerLink="./{{product.id}}"></gt-card>
-    </ng-container>
+    <gt-card *ngFor="let product of blogs" [data]="product" routerLink="./{{product.id}}"></gt-card>
+    <label routerLink="./123">asfasffa</label>
 
 </div>
 

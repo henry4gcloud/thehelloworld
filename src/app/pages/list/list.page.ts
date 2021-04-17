@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../services/api.service";
-import {Blog} from "../../models/Blog";
+import {ApiService} from '../../services/api.service';
+import {Blog} from '../../models/Blog';
 
 @Component({
   selector: 'gt-list',
@@ -19,7 +19,10 @@ export class ListPage implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.blogs = await this.apiService.search({});
+
+    setTimeout(async () => {
+      this.blogs = await this.apiService.search({});
+    }, 2000);
   }
 
   async search(): Promise<void> {
