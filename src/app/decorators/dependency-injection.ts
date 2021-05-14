@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {PromiseType} from 'protractor/built/plugins';
+import {InjectorService} from '../services/InjectorService';
 
 interface DependencyWrapper {
     name?: string;
@@ -11,28 +11,39 @@ interface DependencyWrapper {
 
 const DependencyContainer: Array<DependencyWrapper> = [];
 
+type Type = new(...args: any[]) => any;
+
 export class DependencyContext {
-    public static getDependency(nameOrType: any): any {
-        const dependency = DependencyContainer.find(dependencyItem =>
-            dependencyItem.name === nameOrType)
-        ||
-        DependencyContainer.find(dependencyItem =>
-            nameOrType === dependencyItem.type);
-        // if (dependency) {
-        //     return dependency.value;
-        // } else {
-        //     return undefined;
-        // }
+    public static getDependency(nameOrType: string | Type): any {
+        let type: Type;
+        let name: string;
+        let dependency: DependencyWrapper;
+        if (typeof nameOrType === 'string'){
+            name = nameOrType as string;
+            dependency = DependencyContainer.find(dependencyItem =>
+                dependencyItem.name === name);
+        }else {
+            type = nameOrType;
+            name = type.name.replace(/^./, matched => matched.toLowerCase());
+            dependency = DependencyContainer.find(dependencyItem =>
+                dependencyItem.type === type);
+            if (!dependency) {
+                const value = InjectorService.getInstance(nameOrType);
+                if (!!value) {
+                    dependency = {name, type, value};
+                    DependencyContainer.push(dependency);
+                }
+            }
+        }
         return dependency?.value;
     }
 
-    public static setDependency(data: {name: string,  type?: new (...args: any[]) => any,
-        value?: any}): void {
+    public static setDependency(data: {name: string,  type?: Type, value?: any}): void {
         //
         const {name, type, value} = data;
         const dependency = DependencyContainer.find(dependencyItem =>
-            dependencyItem.name === name || (!!type  && !!dependency.type && type === dependency.type));
-        if (dependency) {
+            dependencyItem.name === name || (!!type  && !!dependencyItem.type && type === dependencyItem.type));
+        if (!!dependency) {
             Object.assign(dependency, {name, type, value});
         } else {
             DependencyContainer.push({name, type, value});
@@ -42,7 +53,7 @@ export class DependencyContext {
 }
 
 
-export function Dependency(nameOrType?: any): (...agrs: any[]) => void {
+export function Dependency(nameOrType?: Type): (...agrs: any[]) => void {
     return (target: any, property: string) => {
         if (!nameOrType){
             // Reflect.getMetadata('design:typeinfo', target, property).type();

@@ -2,20 +2,6 @@ import {SyncProviderInterface} from '../providers/SyncProviderInterface';
 import {Model} from '../models/Model';
 import Timeout = NodeJS.Timeout;
 
-
-const handler =  {
-    set: (target, property, value, receiver) => {
-        target[property] = value;
-        target.latestUpdatedAt = new Date();
-        return true;
-    },
-    get: (target, property, receiver) => {
-        const value = target[property];
-        return value;
-    }
-};
-
-
 export class SyncHandler {
     private syncProvider: SyncProviderInterface<Model>;
     private models: Array<Model> = [];
@@ -23,13 +9,21 @@ export class SyncHandler {
     private interval: Timeout;
     private handler: ProxyHandler<Model> = {
         set: (target, property, value, receiver) => {
+            console.log('proxy set =====');
+            debugger
             target[property] = value;
             target.latestUpdatedAt = new Date();
+            this.initInterval();
             return true;
         },
         get: (target, property, receiver) => {
-            const value = target[property];
-            return value;
+            console.log('proxy get =====');
+            if (property === '_._target_._'){
+                return target;
+            }else {
+                const value = target[property];
+                return value;
+            }
         }
     };
 
@@ -41,23 +35,30 @@ export class SyncHandler {
         if (typeof this.interval === 'undefined') {
             this.interval = setInterval(() => {
                 clearInterval(this.interval);
+                this.interval = undefined;
                 this.executeSync();
-            }, 3 * 60 * 1000);
+            }, 10 * 1000);
         }
     }
 
     private executeSync(): void {
         const dataWillBeSync = this.models.filter(model =>
-            !(model as Model).id || (model as Model).latestUpdatedAt.getTime() > this.latestSyncAt.getTime()
+            !(model as Model).id ||
+            (((model as Model).latestUpdatedAt?.getTime() || 0) > this.latestSyncAt.getTime())
         );
         this.syncProvider.syncAll(dataWillBeSync);
         this.latestSyncAt.setTime(new Date().getTime());
     }
 
     addSyncItem(model: Model): unknown {
+        debugger
         if (!!model) {
             this.models.push(model);
-            const proxy = new Proxy(model, handler);
+            const proxy = new Proxy(model, this.handler);
+            // this.syncProvider.syncOne(model);
+            (this.syncProvider.syncOne(model) as Promise<Model>) .then((m) => {
+                Object.entries(proxy);
+            });
             return proxy;
         } else {
             return null;
@@ -71,5 +72,9 @@ export class SyncHandler {
                 this.models.splice(index, 1);
             }
         });
+    }
+
+    isProxyWrapper(model: Model): boolean{
+        return !!model['_._target_._'];
     }
 }

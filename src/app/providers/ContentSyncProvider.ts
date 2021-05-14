@@ -7,5 +7,7 @@ import {SyncProvider} from '../decorators/AutoSync';
 // @SyncProvider()
 export class ContentSyncProvider extends HttpSyncProviderAbstract<ContentModel>{
     protected httpOptions: {  };
-    protected syncUrl = 'http://cms-api-308908.appspot.com/content';
+    // protected syncUrl = 'http://cms-api-308908.appspot.com/content';
+    protected syncUrl = 'http://localhost:8080/content';
+
 }

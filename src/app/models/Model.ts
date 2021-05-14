@@ -1,5 +1,6 @@
+
 export class Model{
-    id?: string|number;
+    id?: string;
     createdAt?: Date;
     latestUpdatedAt?: Date;
     deletedAt?: Date;

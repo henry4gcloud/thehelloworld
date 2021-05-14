@@ -3,7 +3,7 @@ import {SingleTextComponent} from '../single-text/single-text.component';
 
 
 @Component({
-  selector: 'gt-text',
+  selector: 'gt-inline-text',
   templateUrl: './inline-text.component.html',
   styleUrls: ['./inline-text.component.scss']
 })

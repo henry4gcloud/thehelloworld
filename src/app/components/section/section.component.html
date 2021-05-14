@@ -1,4 +1,5 @@
-<gt-heading gt-placeholder="Heading" [mode]="mode" *ngIf="model.heading || mode !== 'VIEW'"
-            [(model)]="model.heading"></gt-heading>
-<gt-paragraph gt-placeholder="Content"  [mode]="mode" *ngIf="model.content || mode !== 'VIEW'"
-              [(model)]="model.content"></gt-paragraph>
+<gt-inline-text *ngIf="!!sectionModel" [(text)]="sectionModel.heading" [displayMode]="displayMode"
+                (textChange)="triggerSectionModelChange()"></gt-inline-text>
+<gt-single-text *ngIf="!!sectionModel" [(text)]="sectionModel.content" [displayMode]="displayMode"
+                (textChange)="triggerSectionModelChange()">
+</gt-single-text>

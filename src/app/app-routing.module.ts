@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule, Router, NavigationStart, Event, NavigationError, NavigationEnd} from '@angular/router';
 import {ListPage} from './pages/list/list.page';
 import {DetailPage} from './pages/detail/detail.page';
-import {TestPage} from './pages/test-page/test.page';
+import {TestPage} from './pages/test/test.page';
 
 const routes: Routes = [
     {

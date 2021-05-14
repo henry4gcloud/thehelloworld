@@ -3,12 +3,12 @@ import {Blog} from '../../models/Blog';
 import {ApiService} from '../../services/api.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ContentModel} from '../../models/ContentModel';
-import {TextComponent} from '../../components/text/text.component';
 import {Templatable} from '../../containers/Templatable';
 import {SectionModel} from '../../models/SectionModel';
 import {ArticleModel} from '../../models/ArticleModel';
 import {UtilityService} from '../../services/utility.service';
 import {Dependency} from '../../decorators/dependency-injection';
+import {ContentComponent} from '../../components/content/content.component';
 
 @Component({
   selector: 'gt-detail',
@@ -20,7 +20,7 @@ export class DetailPage implements OnInit {
 
   mode: 'DESIGN' | 'EDIT' | 'VIEW' = 'VIEW';
 
-  contentType: Type<Templatable> = TextComponent;
+  contentType: Type<Templatable> = ContentComponent;
 
   blog = new Blog({});
   content = new ContentModel({content: 'Hello World'});

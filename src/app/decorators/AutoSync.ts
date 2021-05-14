@@ -6,6 +6,9 @@ import {SyncHandler} from './SyncHandler';
 
 export type SyncProviderType =  new () => SyncProviderInterface<Model>;
 
+const PROXY_PROPERTY_DECORATOR_KEY = 'PROXY_PROPERTY_DECORATOR_KEY';
+const VALUE_PROPERTY_DECORATOR_KEY = 'VALUE_PROPERTY_DECORATOR_KEY';
+
 interface SyncContainer extends SyncProviderInterface<any>{
     syncData: Array<any>;
     latestSync: Date;
@@ -30,38 +33,42 @@ export function SyncProvider(type?: SyncProviderType): (clazz: SyncProviderType)
     };
 }
 
-export function AutoSync(syncProviderType: SyncProviderType): (...agrs: any[]) => void {
+// tslint:disable-next-line:typedef
+export function AutoSync(syncProviderType: SyncProviderType){
 
-    const syncHandler: SyncHandler = defineSyncProviderBean(syncProviderType);
-
-
+    // tslint:disable-next-line:only-arrow-functions
     return (target: any, key: string) => {
-        let value = target[key];
-        let proxy;
-        if (value){
-            proxy = syncHandler.addSyncItem(value);
-        }
-
-        const getter = () => {
+        const syncHandler: SyncHandler = defineSyncProviderBean(syncProviderType);
+        // tslint:disable-next-line:typedef
+        function getter(){
+            const proxy = Reflect.getMetadata(PROXY_PROPERTY_DECORATOR_KEY, this);
             return proxy;
-        };
+        }
+        // tslint:disable-next-line:typedef
+        function setter(next: any){
+            console.log(this);
+            let value = Reflect.getMetadata(VALUE_PROPERTY_DECORATOR_KEY, this);
+            let proxy = Reflect.getMetadata(PROXY_PROPERTY_DECORATOR_KEY, this);
 
-        const setter = (next: any) => {
-            if (value){
+            if (value) {
                 syncHandler.removeSyncItem(value);
                 proxy = null;
             }
             value = next;
-            if (value){
+            if (value) {
                 proxy = syncHandler.addSyncItem(value);
+                Reflect.defineMetadata(VALUE_PROPERTY_DECORATOR_KEY, value, this);
+                Reflect.defineMetadata(PROXY_PROPERTY_DECORATOR_KEY, proxy, this);
             }
-        };
 
-        Object.defineProperty(target, key, {
-            get: getter,
-            set: setter,
-            enumerable: true,
-            configurable: true,
-        });
+        }
+        if (delete target[key]) {
+            Object.defineProperty(target, key, {
+                get: getter,
+                set: setter,
+                enumerable: true,
+                configurable: true,
+            });
+        }
     };
 }

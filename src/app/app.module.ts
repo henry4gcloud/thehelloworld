@@ -10,7 +10,6 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import {FormsModule} from '@angular/forms';
 import { CardComponent } from './components/card/card.component';
 import {ListPage} from './pages/list/list.page';
-import { TextComponent } from './components/text/text.component';
 import { LayoutContainer } from './containers/layout/layout.container';
 import { ComponentContainer } from './containers/component/component.container';
 import {PageContainer} from './containers/page/page.container';
@@ -24,23 +23,22 @@ import { SectionComponent } from './components/section/section.component';
 import { SingleTextComponent } from './components/single-text/single-text.component';
 import { ArticleComponent } from './components/article/article.component';
 import { TitleComponent } from './components/title/title.component';
+import {TestPage} from './pages/test/test.page';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {InjectorService} from './services/InjectorService';
-import {TestPage} from './pages/test-page/test.page';
+import {DateHttpInterceptor} from './interceptors/DateHttpInterceptor';
 
 const entryComponents = [
   PageContainer,
   LayoutContainer,
   ComponentContainer,
     //
-  TextComponent,
   InlineTextComponent,
   LabelComponent,
   ParagraphComponent,
   HeadingComponent,
   SectionComponent
 ];
-
-export let appInjector: Injector;
 
 @NgModule({
   declarations: [
@@ -52,7 +50,6 @@ export let appInjector: Injector;
     HeaderLayout,
     SearchBarComponent,
     CardComponent,
-    TextComponent,
     LabelComponent,
     InlineTextComponent,
     PageContainer,
@@ -72,16 +69,18 @@ export let appInjector: Injector;
       ...entryComponents
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: DateHttpInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private injector: Injector, private injectorService: InjectorService) {
-    appInjector = this.injector;
-    // injectorService.test();
+  constructor(injector: Injector) {
+    InjectorService.setAppInjector(injector);
   }
 }

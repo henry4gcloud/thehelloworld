@@ -1,4 +1,4 @@
-<gt-title [mode]="mode" [(model)]="model.title"></gt-title>
+<gt-title *ngIf="model.title" [displayMode]="mode" [(model)]="model.title"></gt-title>
 <ng-container *ngIf="model.sections">
     <gt-section [mode]="mode" *ngFor="let section of model.sections; let index = index"
                 [model]="section" (modelChange)="sectionChange($event, index)"></gt-section>
