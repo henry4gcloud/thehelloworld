@@ -51,8 +51,12 @@ export function AutoSync(syncProviderType: SyncProviderType){
             let proxy = Reflect.getMetadata(PROXY_PROPERTY_DECORATOR_KEY, this);
 
             if (value) {
-                syncHandler.removeSyncItem(value);
-                proxy = null;
+                if (value === next || proxy === next){ // ngOnchange()
+                    return;
+                }else {
+                    syncHandler.removeSyncItem(value);
+                    proxy = null;
+                }
             }
             value = next;
             if (value) {
